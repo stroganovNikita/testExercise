@@ -271,8 +271,8 @@ function checkEnemy(attack, hero, enemies, playField) {
 	    setTimeout(() => location.reload(), 200);
 	  };
 	  if (enemies.length <= 0) {
-		alert('You are win!');
-		location.reload();
+		setTimeout(() => alert('You are win!'), 100);
+		setTimeout(() => location.reload(), 200);
 	  }
 	}
   });
