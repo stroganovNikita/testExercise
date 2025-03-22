@@ -230,7 +230,7 @@ function checkStats(direction, hero) {
  	if (direction.sword) return hero.attack = hero.attack + 33; 
 }
 /*Проверка возможности движения*/
-function permissionMove(playField, x, y, enemy) { 
+function permissionMove(playField, x, y) { 
 	try {
 	  if (playField[y][x] === 1) {
 		return {move: true};
@@ -254,11 +254,11 @@ function permissionMove(playField, x, y, enemy) {
     }
 }
 
-/*Реализация атаки*/
+/*Реализация атаки героя*/
 function checkEnemy(attack, hero, enemies, playField) {
   enemies.forEach(function(enemy) {
 	if (Math.abs(hero.x - enemy.x) + Math.abs(hero.y - enemy.y) === 1) { // Проверка наличия врага
-	  hero.hp = hero.hp - enemy.attack; // Атака по герою
+		hero.hp = hero.hp - enemy.attack; // Атака по герою
 	  if (attack) {
 	    enemy.hp = enemy.hp - hero.attack; // Атака по врагу
 	  };
@@ -275,7 +275,17 @@ function checkEnemy(attack, hero, enemies, playField) {
 		location.reload();
 	  }
 	}
-  })
+  });
+};
+/*Функция для атаки пользователя врагом при хождении*/
+function hitEnemy(hero, enemy) {  
+  if (Math.abs(hero.x - enemy.x) + Math.abs(hero.y - enemy.y) === 1) {
+	hero.hp = hero.hp - enemy.attack;
+    if (hero.hp <= 0) { // Обновление страницы в случае смерти героя
+		alert('You are lose!');
+	    location.reload();
+  };
+ }
 };
 /*Движение врагов*/
 function movementEnemies(playField, hero, enemies) {
@@ -286,14 +296,16 @@ function movementEnemies(playField, hero, enemies) {
 		const d = permissionMove(playField, enemy.x + 1, enemy.y, true) 
 		if (d.move && !d.health && !d.sword) {  // Можно ходить, если true move, но не на фласки со здоровьем и не на мечи
 		  enemy.x = enemy.x + 1;
-		  rearrangement(playField, enemy.y, enemy.x -1, enemy.y, enemy.x, 5, hero, enemies); // Перестановка элементов на карте
+		  rearrangement(playField, enemy.y, enemy.x -1, enemy.y, enemy.x, 5, hero, enemies);  // Перестановка элементов на карте
+		  hitEnemy(hero, enemy);
 		  break;
-		}; 
+		};
 	  case 1:
 		const a = permissionMove(playField, enemy.x - 1, enemy.y, true)
 		if (a.move && !a.health && !a.sword) { 
 		  enemy.x = enemy.x - 1;
 		  rearrangement(playField, enemy.y, enemy.x + 1, enemy.y, enemy.x, 5, hero, enemies);
+		  hitEnemy(hero, enemy);
 	  	  break;
 		} 
 	  case 2: 
@@ -301,6 +313,7 @@ function movementEnemies(playField, hero, enemies) {
 		if (w.move && !w.health && !w.sword) {
 		  enemy.y = enemy.y - 1;
 		  rearrangement(playField, enemy.y + 1, enemy.x, enemy.y, enemy.x, 5, hero, enemies);
+		  hitEnemy(hero, enemy);
 		  break;
 		} 
 	  case 3:
@@ -308,6 +321,7 @@ function movementEnemies(playField, hero, enemies) {
 		if (s.move && !s.health && !s.sword) {
 		  enemy.y = enemy.y + 1;
 		  rearrangement(playField, enemy.y - 1, enemy.x, enemy.y, enemy.x, 5, hero, enemies);
+		  hitEnemy(hero, enemy);
 		}	
 		break;
 		} 
