@@ -267,8 +267,8 @@ function checkEnemy(attack, hero, enemies, playField) {
 		enemies.splice(enemies.indexOf(enemy), 1);
 	  };
       if (hero.hp <= 0) { // Обновление страницы в случае смерти героя
-		alert('You are lose!');
-	    location.reload();
+		setTimeout(() => alert('You are lose!'), 100);
+	    setTimeout(() => location.reload(), 200);
 	  };
 	  if (enemies.length <= 0) {
 		alert('You are win!');
@@ -282,8 +282,8 @@ function hitEnemy(hero, enemy) {
   if (Math.abs(hero.x - enemy.x) + Math.abs(hero.y - enemy.y) === 1) {
 	hero.hp = hero.hp - enemy.attack;
     if (hero.hp <= 0) { // Обновление страницы в случае смерти героя
-		alert('You are lose!');
-	    location.reload();
+		setTimeout(() => alert('You are lose!'), 100);
+	    setTimeout(() => location.reload(), 200);
   };
  }
 };
@@ -302,7 +302,7 @@ function movementEnemies(playField, hero, enemies) {
 		};
 	  case 1:
 		const a = permissionMove(playField, enemy.x - 1, enemy.y, true)
-		if (a.move && !a.health && !a.sword) { 
+		if (a.move && !a.health && !a.sword) {
 		  enemy.x = enemy.x - 1;
 		  rearrangement(playField, enemy.y, enemy.x + 1, enemy.y, enemy.x, 5, hero, enemies);
 		  hitEnemy(hero, enemy);
@@ -318,7 +318,7 @@ function movementEnemies(playField, hero, enemies) {
 		} 
 	  case 3:
 		const s = permissionMove(playField, enemy.x, enemy.y + 1, true)
-		if (s.move && !s.health && !s.sword) {
+		if (s.move && !s.health && !s.sword) {	
 		  enemy.y = enemy.y + 1;
 		  rearrangement(playField, enemy.y - 1, enemy.x, enemy.y, enemy.x, 5, hero, enemies);
 		  hitEnemy(hero, enemy);
